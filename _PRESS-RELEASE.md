@@ -28,7 +28,7 @@ Once the project moves into development, the press release can be used as a touc
 
 ## Summary ##
   > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
-  This 'game' is example of axiomatic based simulation of 'life.' I say 'game' because you can't win, or lose you just learn new things about how the game interacts with itself and the user.  I say 'life' because this is highly simplified.  The board is setup something like a chess/checker board with tiles. Which we will call cells. When you click a cell you put living cell there.  If the cells surrounding the live cell add up to be less than 2 he will die of lonliness.  If the cells surrounding the live cell are greater than 3 he will die of overpopulation.  A simple example is a 2x2 square, if nothing else interacts with this square it is self-sustaining.
+  This 'game' is example of axiomatic based simulation of 'life.' I say 'game' because you can't win, or lose you just learn new things about how the game interacts with itself and the user.  I say 'life' because this is highly simplified.  The board is setup something like a chess/checker board with tiles. Which we will call cells. When you click a cell you put living cell there.  If the cells surrounding the live cell add up to be less than 2 he will die of lonliness.  If the cells surrounding the live cell are greater than 3 he will die of overpopulation. If there are exactly three neighbors in an empty cell, create life there. A simple example is a 2x2 square, if nothing else interacts with this square it is self-sustaining.
 
 ## Problem ##
   > Describe the problem your product solves.

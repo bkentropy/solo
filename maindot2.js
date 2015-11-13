@@ -20,23 +20,33 @@ $(document).ready(function () {
 
     $('.square').on('click', turnGreen)
 
-
 });
 
 // Click to make life
 var turnGreen = function() {
-  // console.log("yoooooooo")
-  $(this).css("background", "green")
-  $(this).addClass("alive");
+  var $el = $(this);
+  $el
+    .addClass("alive")
+    .off("click", turnGreen)
+    .on("click", death);
+}
+
+var death = function() {
+  // console.log("YOOOOOO")
+  var $el = $(this);
+  $el
+    .removeClass("alive")
+    .off('click', death)
+    .on("click", turnGreen)
+  // $(this).removeClass("alive");
 }
 
 // Start building out the logic
-
 // Build a map of the alive cells
-// (Make sure to pass in something like $('.row0'))
 var makeMap = function(row, column) {
   var map = [];
   var temp = []
+  row = row || $('.row0');
 
   var colAnalyze = function(row) {
     for ( var i = 0; i < row.children().length; i++ ) {
@@ -53,7 +63,7 @@ var makeMap = function(row, column) {
     return map;
   }
 
-  // Iter
+  // Iterate over rows
   for ( var j = 0; j < row.children().length; j++ ) {
     colAnalyze($('.row'+j));
   }
@@ -64,6 +74,63 @@ var makeMap = function(row, column) {
 
 // Write a function that checks all of the neighbors 
   // This must be done in 'one step of time'
+var checkNeighbors = function(r, c) {
+  // keep count
+  var total = 0;
+  // use map to find neighbors
+  var checkThis = makeMap();
+  // check row above
+  var topRow = function(r,c) {
+    var neighbors = 0;
+    if ( checkThis[r - 1][c - 1] === 1 ) {
+      neighbors += 1;
+    }
+    if ( checkThis[r - 1][c] === 1) {
+      neighbors += 1;
+    }
+    if ( checkThis[r - 1][c + 1] === 1) {
+      neighbors += 1;
+    }
+    return neighbors
+  }
+  // check sides
+  var sides = function(r,c) {
+    var neighbors = 0;
+    if ( checkThis[r][c - 1] === 1 ) {
+      neighbors += 1;
+    }
+    if ( checkThis[r][c + 1] === 1) {
+      neighbors += 1;
+    }
+    return neighbors
+  }
+  // check row below
+  var belowRow = function(r,c) {
+    var neighbors = 0;
+    if ( checkThis[r + 1][c - 1] === 1 ) {
+      neighbors += 1;
+    }
+    if ( checkThis[r + 1][c] === 1) {
+      neighbors += 1;
+    }
+    if ( checkThis[r + 1][c + 1] === 1) {
+      neighbors += 1;
+    }
+    return neighbors
+  }
+  // iterate over whole matrix
+  // for ( var r = 0; r < rows; r++ ) {
+  //   for ( var c = 0; c < columns; c++ ) {
+  //     // pass this into something that checks top, sides, and botton
+  //     checkThis[r][c]
+  //   }
+  // }
+  total = topRow(r,c) + sides(r,c) + belowRow(r,c);
+
+  return total
+}
+  
+
 
 // If 2 or 3 neighbors are alive then keep class alive
   // else die. (from lonliness or overcrowding)

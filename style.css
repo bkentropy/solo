@@ -45,5 +45,9 @@
 }
 
 .alive {
-  background-color: 'green';
+  background-color: green;
+}
+
+.dead {
+  background-color: white;
 }
