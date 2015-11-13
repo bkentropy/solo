@@ -19,7 +19,8 @@ $(document).ready(function () {
     }
 
     $('.square').on('click', turnGreen)
-
+    $('.clear').on('click', liveOrDie);
+    $('.step').on('click', bringToLife);
 });
 
 // Click to make life
@@ -82,14 +83,16 @@ var checkNeighbors = function(r, c) {
   // check row above
   var topRow = function(r,c) {
     var neighbors = 0;
-    if ( checkThis[r - 1][c - 1] === 1 ) {
-      neighbors += 1;
-    }
-    if ( checkThis[r - 1][c] === 1) {
-      neighbors += 1;
-    }
-    if ( checkThis[r - 1][c + 1] === 1) {
-      neighbors += 1;
+    if ( checkThis[r - 1] ) {
+      if ( checkThis[r - 1][c - 1] === 1 ) {
+        neighbors += 1;
+      }
+      if ( checkThis[r - 1][c] === 1) {
+        neighbors += 1;
+      }
+      if ( checkThis[r - 1][c + 1] === 1) {
+        neighbors += 1;
+      }
     }
     return neighbors
   }
@@ -107,37 +110,65 @@ var checkNeighbors = function(r, c) {
   // check row below
   var belowRow = function(r,c) {
     var neighbors = 0;
-    if ( checkThis[r + 1][c - 1] === 1 ) {
-      neighbors += 1;
-    }
-    if ( checkThis[r + 1][c] === 1) {
-      neighbors += 1;
-    }
-    if ( checkThis[r + 1][c + 1] === 1) {
-      neighbors += 1;
+    if ( checkThis[r + 1] ) {
+      if ( checkThis[r + 1][c - 1] === 1 ) {
+        neighbors += 1;
+      }
+      if ( checkThis[r + 1][c] === 1) {
+        neighbors += 1;
+      }
+      if ( checkThis[r + 1][c + 1] === 1) {
+        neighbors += 1;
+      }
     }
     return neighbors
   }
-  // iterate over whole matrix
-  // for ( var r = 0; r < rows; r++ ) {
-  //   for ( var c = 0; c < columns; c++ ) {
-  //     // pass this into something that checks top, sides, and botton
-  //     checkThis[r][c]
-  //   }
-  // }
+
   total = topRow(r,c) + sides(r,c) + belowRow(r,c);
 
   return total
 }
   
 
+/*
+start up stuff
+var checkThis = makeMap($('.row0'))
 
-// If 2 or 3 neighbors are alive then keep class alive
-  // else die. (from lonliness or overcrowding)
+*/
+
+
+// If 2 or 3 neighbors are alive then keep class alive 
+// else die. (from lonliness or overcrowding)
+var liveOrDie = function() {
+// iterate over whole matrix
+  for ( var r = 0; r < rows; r++ ) {
+    for ( var c = 0; c < columns; c++ ) {
+      // pass this into something that checks top, sides, and botton
+      if ( checkNeighbors(r,c) >= 3) {
+        // kill the cell 
+        $($('.row'+r).children()[c]).removeClass('alive')
+      } else {
+        // ignore, live
+      }
+    }
+  } 
+}
 
 // If 3 neighbors of an empty space have alive class add life to the cell/div
+var bringToLife = function() {
+  for ( var r = 0; r < rows; r++ ) {
+    for ( var c = 0; c < columns; c++ ) {
+      // pass this into something that checks top, sides, and botton
+      if ( checkNeighbors(r,c) === 3) {
+        // kill the cell 
+        $($('.row'+r).children()[c]).addClass('alive')
+      } else {
+        // ignore, live
+      }
+    }
+  } 
+}
 
-// 
 
 
 
