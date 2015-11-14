@@ -1,3 +1,8 @@
+// TODO: Fix the logic of BringToLife and liveOrDead
+// TODO: Make buttons awesomesauce
+
+
+
 var rows = 10;
 var columns = 10;
 var $row = $("<div />", {
@@ -75,11 +80,11 @@ var makeMap = function(row, column) {
 
 // Write a function that checks all of the neighbors 
   // This must be done in 'one step of time'
-var checkNeighbors = function(r, c) {
+var checkNeighbors = function(r, c, checkThis) {
   // keep count
   var total = 0;
   // use map to find neighbors
-  var checkThis = makeMap();
+  // var checkThis = makeMap();
   // check row above
   var topRow = function(r,c) {
     var neighbors = 0;
@@ -140,11 +145,12 @@ var checkThis = makeMap($('.row0'))
 // If 2 or 3 neighbors are alive then keep class alive 
 // else die. (from lonliness or overcrowding)
 var liveOrDie = function() {
+  var oldMap = makeMap()
 // iterate over whole matrix
   for ( var r = 0; r < rows; r++ ) {
     for ( var c = 0; c < columns; c++ ) {
       // pass this into something that checks top, sides, and botton
-      if ( checkNeighbors(r,c) >= 3) {
+      if ( checkNeighbors(r,c, oldMap) > 3) {
         // kill the cell 
         $($('.row'+r).children()[c]).removeClass('alive')
       } else {
@@ -156,10 +162,11 @@ var liveOrDie = function() {
 
 // If 3 neighbors of an empty space have alive class add life to the cell/div
 var bringToLife = function() {
+  var oldMap = makeMap()
   for ( var r = 0; r < rows; r++ ) {
     for ( var c = 0; c < columns; c++ ) {
       // pass this into something that checks top, sides, and botton
-      if ( checkNeighbors(r,c) === 3) {
+      if ( checkNeighbors(r,c,oldMap) === 3) {
         // kill the cell 
         $($('.row'+r).children()[c]).addClass('alive')
       } else {
