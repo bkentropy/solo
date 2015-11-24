@@ -1,4 +1,3 @@
-// TODO: Fix the logic of BringToLife and liveOrDead
 // TODO: Make buttons awesomesauce
 
 
@@ -24,8 +23,7 @@ $(document).ready(function () {
     }
 
     $('.square').on('click', turnGreen)
-    $('.clear').on('click', liveOrDie);
-    $('.step').on('click', bringToLife);
+    $('.step').on('click', liveOrDie);
 });
 
 // Click to make life
@@ -38,7 +36,6 @@ var turnGreen = function() {
 }
 
 var death = function() {
-  // console.log("YOOOOOO")
   var $el = $(this);
   $el
     .removeClass("alive")
@@ -83,8 +80,7 @@ var makeMap = function(row, column) {
 var checkNeighbors = function(r, c, checkThis) {
   // keep count
   var total = 0;
-  // use map to find neighbors
-  // var checkThis = makeMap();
+
   // check row above
   var topRow = function(r,c) {
     var neighbors = 0;
@@ -130,7 +126,6 @@ var checkNeighbors = function(r, c, checkThis) {
   }
 
   total = topRow(r,c) + sides(r,c) + belowRow(r,c);
-
   return total
 }
   
@@ -146,43 +141,34 @@ var checkThis = makeMap($('.row0'))
 // else die. (from lonliness or overcrowding)
 var liveOrDie = function() {
   var oldMap = makeMap()
+  var cellsToDie = [];
+  var cellsToLive = [];
 // iterate over whole matrix
   for ( var r = 0; r < rows; r++ ) {
     for ( var c = 0; c < columns; c++ ) {
       // pass this into something that checks top, sides, and botton
-      if ( checkNeighbors(r,c, oldMap) > 3) {
+      if ( checkNeighbors(r,c, oldMap) > 3) { 
         // kill the cell 
-        $($('.row'+r).children()[c]).removeClass('alive')
-      } else {
-        // ignore, live
+        cellsToDie.push([r,c]);
+      } else if ( checkNeighbors(r,c,oldMap) < 2) {
+        cellsToDie.push([r,c]);
+      } else if ( checkNeighbors(r,c,oldMap) === 3) {
+        // bring the cell to life
+        cellsToLive.push([r,c]);
       }
     }
   } 
+  for ( var i = 0; i < cellsToDie.length; i++ ) {
+    var row = cellsToDie[i][0];
+    var col = cellsToDie[i][1];
+    $($('.row'+row).children()[col]).removeClass('alive')
+  }
+  for ( var j = 0; j < cellsToLive.length; j++ ) {
+    var row = cellsToLive[j][0];
+    var col = cellsToLive[j][1];
+    $($('.row'+row).children()[col]).addClass('alive')
+  }
 }
 
-// If 3 neighbors of an empty space have alive class add life to the cell/div
-var bringToLife = function() {
-  var oldMap = makeMap()
-  for ( var r = 0; r < rows; r++ ) {
-    for ( var c = 0; c < columns; c++ ) {
-      // pass this into something that checks top, sides, and botton
-      if ( checkNeighbors(r,c,oldMap) === 3) {
-        // kill the cell 
-        $($('.row'+r).children()[c]).addClass('alive')
-      } else {
-        // ignore, live
-      }
-    }
-  } 
-}
-
-
-
-
-
-// At each step, life persists in any location where it is also present in two or three 
-// of the eight neighboring locations, and otherwise disappears (from loneliness or overcrowding). 
-// Life is born in any empty location for which there is life in three of the eight neighboring 
-// locations.
 
 
